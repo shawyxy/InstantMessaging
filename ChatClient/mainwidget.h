@@ -1,6 +1,7 @@
 #ifndef MAINWIDGET_H
 #define MAINWIDGET_H
 
+#include "./model/data.h"
 #include <QWidget>
 
 class MainWidget : public QWidget
