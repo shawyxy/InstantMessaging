@@ -5,7 +5,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWidget w;
-    w.show();
+    MainWidget *w = MainWidget::getInstance();
+    w->show();
     return a.exec();
 }

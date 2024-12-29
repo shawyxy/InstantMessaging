@@ -6,10 +6,20 @@
 #include <QDateTime>
 #include <QFile>
 #include <iostream>
-
-#define LOG std::cout << __FILE__ << ":" << __LINE__ << " "
+#include <QFileInfo>
 
 namespace model {
+/**
+ * @brief 日志
+ */
+static inline QString getFileName(const QString &path)
+{
+    QFileInfo fileInfo(path);
+    return fileInfo.fileName();
+}
+#define TAG QString("[%1:%2]").arg(model::getFileName(__FILE__), QString::number(__LINE__))
+#define LOG qDebug().noquote() << TAG << ":"
+
 
 /**
  * @brief 工具函数(内联函数，避免重复定义)
@@ -62,7 +72,7 @@ static inline QByteArray loadFileToByteArray(const QString &path)
     bool ok = file.open(QFile::ReadOnly);
     if (!ok)
     {
-        LOG << "文件打开失败" << std::endl;
+        LOG << "文件打开失败";
         return QByteArray();
     }
     QByteArray byteArray = file.readAll();
@@ -81,7 +91,7 @@ static inline void saveByteArrayToFile(const QByteArray &byteArray, const QStrin
     bool ok = file.open(QFile::WriteOnly);
     if (!ok)
     {
-        LOG << "文件打开失败" << std::endl;
+        LOG << "文件打开失败";
         return;
     }
     file.write(byteArray);
