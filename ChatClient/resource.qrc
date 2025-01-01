@@ -6,8 +6,8 @@
         <file>resource/image/cross.png</file>
         <file>resource/image/defaultAvatar.png</file>
         <file>resource/image/file.png</file>
-        <file>resource/image/friend_active.png</file>
-        <file>resource/image/friend_inactive.png</file>
+        <file>resource/image/contact_active.png</file>
+        <file>resource/image/contact_inactive.png</file>
         <file>resource/image/groupAvatar.png</file>
         <file>resource/image/history.png</file>
         <file>resource/image/image.png</file>
