@@ -18,6 +18,8 @@ ContactSessionArea::ContactSessionArea(QWidget *parent)
                                               background-color: rgb(80, 80, 80); }");
     this->horizontalScrollBar()->setStyleSheet("QScrollBar:horizontal { \
                                                 height: 0px; }");
+    // 去除边框
+    this->setStyleSheet("QWidget { border: none; }");
 
     container = new QWidget(this);
     container->setFixedWidth(300); // 宽度和左侧窗口一致
@@ -70,6 +72,12 @@ void ContactSessionArea::SLOT_clear()
     }
 }
 
+/**
+ * @brief        添加一个会话对象(ContactSessionItem)到会话列表
+ * @param avatar 用户头像
+ * @param name   用户名称
+ * @param msg    用户消息
+ */
 void ContactSessionArea::SLOT_addSessionItem(const QIcon &avatar, const QString &name, const QString &msg)
 {
     ContactSessionItem *item = new ContactSessionItem(this, avatar, name, msg);
@@ -77,7 +85,7 @@ void ContactSessionArea::SLOT_addSessionItem(const QIcon &avatar, const QString 
 }
 
 /**
- * @brief 构造函数
+ * @brief        构造函数
  * @param owner  父组件指针 (会话列表滚动区域 ContactSessionArea 对象)
  * @param avatar 用户头像
  * @param name   用户名称
@@ -86,7 +94,7 @@ void ContactSessionArea::SLOT_addSessionItem(const QIcon &avatar, const QString 
 ContactSessionItem::ContactSessionItem(QWidget *owner, const QIcon &avatar, const QString &name, const QString &msg)
 {
     this->setFixedHeight(70); // 设置固定高度
-    this->setStyleSheet("QWidget { background-color: rgb(230, 230, 230); }"); // 设置背景颜色
+    this->setStyleSheet("QWidget { background-color: rgb(229, 228, 228); }"); // 设置背景颜色
 
     // 网格布局管理器
     QGridLayout *layout = new QGridLayout();
@@ -121,6 +129,11 @@ ContactSessionItem::ContactSessionItem(QWidget *owner, const QIcon &avatar, cons
     layout->addWidget(msgLabel, 1, 2, 1, 1);  // 消息，在第1行2列，占1行1列
 }
 
+/**
+ * @brief       重写绘图事件
+ * @param event 事件对象
+ * @note        用于绘制背景颜色
+ */
 void ContactSessionItem::paintEvent(QPaintEvent *event)
 {
     (void)event;
@@ -128,5 +141,66 @@ void ContactSessionItem::paintEvent(QPaintEvent *event)
     opt.initFrom(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+/**
+ * @brief       重写鼠标点击事件
+ * @param event 事件对象
+ * @note        点击会话对象，选中当前会话
+ */
+void ContactSessionItem::mousePressEvent(QMouseEvent *event)
+{
+    (void)event;
+    select();
+}
+
+/**
+ * @brief 选中当前会话
+ */
+void ContactSessionItem::select()
+{
+    this->setStyleSheet("QWidget { background-color: rgb(199, 197, 197); }"); // 设置背景颜色
+    this->isSelect = true;                                                    // 选中当前会话
+    const QObjectList children = this->parentWidget()->children();            // 将其他会话取消选中
+    for (QObject *child : children)
+    {
+        if (child != this)                                                    // 不是当前选中的会话
+        {
+            ContactSessionItem *item = dynamic_cast<ContactSessionItem *>(child);
+            if (item)                                                         // 如果是会话对象
+            {
+                item->setStyleSheet("QWidget { background-color: rgb(229, 228, 228); }");
+                item->isSelect = false;
+            }
+        }
+    }
+}
+
+/**
+ * @brief       重写鼠标进入事件
+ * @param event 事件对象
+ * @note        鼠标悬停，设置背景颜色
+ */
+void ContactSessionItem::enterEvent(QEnterEvent *event)
+{
+    (void)event;
+    if (!isSelect) // 如果当前会话未选中
+    {
+        this->setStyleSheet("QWidget { background-color: rgb(217, 216, 216); }");
+    }
+}
+
+/**
+ * @brief       重写鼠标离开事件
+ * @param event 事件对象
+ * @note        鼠标离开，恢复背景颜色
+ */
+void ContactSessionItem::leaveEvent(QEvent *event)
+{
+    (void)event;
+    if (!isSelect) // 如果当前会话未选中
+    {
+        this->setStyleSheet("QWidget { background-color: rgb(229, 228, 228); }");
+    }
 }
 

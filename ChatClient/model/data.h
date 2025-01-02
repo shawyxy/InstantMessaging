@@ -26,9 +26,9 @@ static inline QString getFileName(const QString &path)
  */
 
 /**
- * @brief 格式化时间
+ * @brief           格式化时间
  * @param timestamp 时间戳
- * @return 格式化后的时间
+ * @return          格式化后的时间
  */
 static inline QString formatTime(int64_t timestamp)
 {
@@ -39,7 +39,7 @@ static inline QString formatTime(int64_t timestamp)
 }
 
 /**
- * @brief 获取当前时间
+ * @brief  获取当前时间
  * @return 当前秒级时间戳
  */
 static inline int64_t getTime()
@@ -48,9 +48,9 @@ static inline int64_t getTime()
 }
 
 /**
- * @brief 将QByteArray(二进制)转换为QIcon(图标)
+ * @brief           将QByteArray(二进制)转换为QIcon(图标)
  * @param byteArray 二进制数据
- * @return 图标
+ * @return          图标
  */
 static inline QIcon byteArrayToIcon(const QByteArray &byteArray)
 {
@@ -62,8 +62,8 @@ static inline QIcon byteArrayToIcon(const QByteArray &byteArray)
 }
 
 /**
- * @brief 读取文件
- * @param 二进制文件路径
+ * @brief             读取文件
+ * @param path        二进制文件路径
  * @return QByteArray 二进制文件数据
  */
 static inline QByteArray loadFileToByteArray(const QString &path)
@@ -82,8 +82,9 @@ static inline QByteArray loadFileToByteArray(const QString &path)
 }
 
 /**
- * @brief 保存文件
- * @param 二进制文件数据，文件路径
+ * @brief           保存文件
+ * @param byteArray 二进制文件数据
+ * @param path      二进制文件路径
  */
 static inline void saveByteArrayToFile(const QByteArray &byteArray, const QString &path)
 {
@@ -147,7 +148,7 @@ public:
 
 public:
     /**
-     * @brief 创建消息       工厂模式
+     * @brief               创建消息       工厂模式
      * @param messageType   消息类型
      * @param chatSessionId 会话编号
      * @param sender        发送者
@@ -181,7 +182,7 @@ public:
 
 private:
     /**
-     * @brief 创建唯一编号，用于标识消息，会话等对象
+     * @brief  创建唯一编号，用于标识消息，会话等对象
      * @return 唯一编号，前缀'M'表示消息类型的编号
      */
     static QString createUuid()
@@ -192,9 +193,11 @@ private:
         return preFix + uuid.mid(pos); // sliced?
     }
     /**
-     * @brief 创建文本消息
-     * @param chatSessionId 会话编号，sender 发送者，content 消息内容
-     * @return 消息对象
+     * @brief               创建文本消息
+     * @param chatSessionId 会话编号
+     * @param sender        发送者
+     * @param content       消息内容
+     * @return              消息对象
      */
     static Message makeTextMessage(const QString &chatSessionId, const UserInfo &sender, const QByteArray &content)
     {
@@ -214,9 +217,11 @@ private:
         return msg;
     }
     /**
-     * @brief 创建图片消息
-     * @param chatSessionId 会话编号，sender 发送者，content 消息内容
-     * @return 消息对象
+     * @brief               创建图片消息
+     * @param chatSessionId 会话编号
+     * @param sender        发送者
+     * @param content       消息内容
+     * @return              消息对象
      */
     static Message makeImageMessage(const QString &chatSessionId, const UserInfo &sender, const QByteArray &content)
     {
@@ -235,9 +240,12 @@ private:
         return msg;
     }
     /**
-     * @brief 创建文件消息
-     * @param chatSessionId 会话编号，sender 发送者，content 消息内容，fileName 文件名
-     * @return 消息对象
+     * @brief               创建文件消息
+     * @param chatSessionId 会话编号
+     * @param sender        发送者
+     * @param content       消息内容
+     * @param fileName      文件名
+     * @return              消息对象
      */
     static Message makeFileMessage(const QString &chatSessionId, const UserInfo &sender, const QByteArray &content, const QString& fileName)
     {
@@ -256,9 +264,11 @@ private:
         return msg;
     }
     /**
-     * @brief
-     * @param
-     * @return
+     * @brief               创建语音消息
+     * @param chatSessionId 会话编号
+     * @param sender        发送者
+     * @param content       消息内容
+     * @return              消息对象
      */
     static Message makeVoiceMessage(const QString &chatSessionId, const UserInfo &sender, const QByteArray &content)
     {

@@ -111,6 +111,8 @@ void MainWidget::initMidWindow()
 {
     QGridLayout *layout = new QGridLayout();
     layout->setContentsMargins(0, 20, 0, 0); // 设置布局上方的边距
+    layout->setHorizontalSpacing(0);         // 设置水平方向间距
+    layout->setVerticalSpacing(10);          // 设置垂直方向间距
     windowMid->setLayout(layout);
 
     searchEdit = new QLineEdit();
@@ -125,6 +127,7 @@ void MainWidget::initMidWindow()
     style += "QPushButton:pressed { background-color: rgb(240, 240, 240); }";
     addContactBtn->setStyleSheet(style);
 
+    // 用空白控件填充搜索框布局
     QWidget *spacer1 = new QWidget();
     spacer1->setFixedWidth(10);
     QWidget *spacer2 = new QWidget();
