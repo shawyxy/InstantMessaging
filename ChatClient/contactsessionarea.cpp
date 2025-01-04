@@ -57,7 +57,7 @@ ContactSessionArea::ContactSessionArea(QWidget *parent)
  *          2. 从最后一个子组件开始删除，是因为删除一个子组件后，后面的子组件会前移
  *             手动删除子组件，防止内存泄漏
  */
-void ContactSessionArea::SLOT_clear()
+void ContactSessionArea::SLOT_clearSessionList()
 {
     QLayout *layout = container->layout();
     for (int i = layout->count() - 1; i >= 0; --i)
@@ -82,6 +82,28 @@ void ContactSessionArea::SLOT_addSessionItem(const QIcon &avatar, const QString 
 {
     ContactSessionItem *item = new ContactSessionItem(this, avatar, name, msg);
     container->layout()->addWidget(item);
+}
+
+/**
+ * @brief       选中会话列表中的某一项
+ * @param index 会话列表索引
+ */
+void ContactSessionArea::SLOT_selectSessionItem(int index)
+{
+    if (index < 0 || index >= container->layout()->count())
+    {
+        LOG << "会话列表索引越界, index: " << index;
+        return;
+    }
+    QLayoutItem *layoutItem = container->layout()->itemAt(index);
+    if (layoutItem == nullptr || layoutItem->layout() == nullptr) // 项为空或者项的布局为空
+    {
+        LOG << "会话列表项为空, index:" << index;
+        return;
+    }
+    // 从布局项中获取会话对象
+    ContactSessionItem *item = dynamic_cast<ContactSessionItem *>(layoutItem->widget());
+    item->select(); // 选中当前会话
 }
 
 /**

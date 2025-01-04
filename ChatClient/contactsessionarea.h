@@ -4,6 +4,7 @@
 #include <QScrollArea>
 #include <QWidget>
 #include "debug.h"
+#include "model/data.h"
 
 /**
  * @brief 会话列表(滚动)区域类
@@ -19,7 +20,7 @@ public slots:
     /**
      * @brief 清空会话列表
      */
-    void SLOT_clear();
+    void SLOT_clearSessionList();
 
     /**
      * @brief        添加一个会话对象(ContactSessionItem)到会话列表
@@ -28,6 +29,13 @@ public slots:
      * @param msg    用户消息
      */
     void SLOT_addSessionItem(const QIcon &avatar, const QString &name, const QString &msg);
+
+    /**
+     * @brief       选中会话列表中的某一项
+     * @param index 会话列表索引
+     */
+    void SLOT_selectSessionItem(int index);
+
 
 signals:
 };
@@ -84,4 +92,5 @@ public:
      */
     void leaveEvent(QEvent *event) override;
 };
+
 #endif // CONTACTSESSIONAREA_H
