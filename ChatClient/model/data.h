@@ -291,7 +291,7 @@ private:
 
 
 /**
- * @brief 用户信息
+ * @brief 会话信息
  */
 class ChatSessionInfo
 {
@@ -307,7 +307,15 @@ public:
 };
 
 
-
+/**
+ * @brief 项的类型
+ */
+enum ItemType
+{
+    ContactItem,      // 联系人项
+    SessionItem,      // 会话
+    ApplyItem         // 申请
+};
 
 } // end model
 

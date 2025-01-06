@@ -43,7 +43,7 @@ ContactSessionArea::ContactSessionArea(QWidget *parent)
     QIcon icon(":/resource/image/defaultAvatar.png");
     for (int i = 0; i <=20; ++i)
     {
-        this->SLOT_addSessionItem(icon, "用户" + QString::number(i), "最后一条消息" + QString::number(i));
+        this->SLOT_addItem(model::ItemType::ApplyItem, QString::number(i), icon, "用户" + QString::number(i), "最后一条消息" + QString::number(i));
     }
 #endif
 }
@@ -73,14 +73,37 @@ void ContactSessionArea::SLOT_clearSessionList()
 }
 
 /**
- * @brief        添加一个会话对象(ContactSessionItem)到会话列表
+ * @brief        添加一个项到会话列表
+ * @param type   项的类型
+ * @param id     用户编号/会话编号
  * @param avatar 用户头像
  * @param name   用户名称
- * @param msg    用户消息
+ * @param msg    用户消息/用户简介/用户申请理由
  */
-void ContactSessionArea::SLOT_addSessionItem(const QIcon &avatar, const QString &name, const QString &msg)
+void ContactSessionArea::SLOT_addItem(model::ItemType type, const QString &id, const QIcon &avatar,
+                                      const QString &name, const QString &msg)
 {
-    ContactSessionItem *item = new ContactSessionItem(this, avatar, name, msg);
+    ContactSessionItemBase *item = nullptr;
+    switch (type)
+    {
+    case model::ItemType::ContactItem:
+        item = new ContactItem(this, id, avatar, name, msg);
+        break;
+    case model::ItemType::SessionItem:
+        item = new SessionItem(this, id, avatar, name, msg);
+        break;
+    case model::ItemType::ApplyItem:
+        item = new ApplyItem(this, id, avatar, name, msg);
+        break;
+    default:
+        break;
+    }
+    if (item == nullptr)
+    {
+        LOG << "会话项为空";
+        return;
+    }
+    // 添加到会话列表
     container->layout()->addWidget(item);
 }
 
@@ -102,18 +125,18 @@ void ContactSessionArea::SLOT_selectSessionItem(int index)
         return;
     }
     // 从布局项中获取会话对象
-    ContactSessionItem *item = dynamic_cast<ContactSessionItem *>(layoutItem->widget());
+    ContactSessionItemBase *item = dynamic_cast<ContactSessionItemBase *>(layoutItem->widget());
     item->select(); // 选中当前会话
 }
 
 /**
- * @brief        构造函数
+ * @brief        会话项(Item)基类构造函数
  * @param owner  父组件指针 (会话列表滚动区域 ContactSessionArea 对象)
  * @param avatar 用户头像
  * @param name   用户名称
  * @param msg    用户消息
  */
-ContactSessionItem::ContactSessionItem(QWidget *owner, const QIcon &avatar, const QString &name, const QString &msg)
+ContactSessionItemBase::ContactSessionItemBase(QWidget *owner, const QIcon &avatar, const QString &name, const QString &msg)
 {
     this->setFixedHeight(70); // 设置固定高度
     this->setStyleSheet("QWidget { background-color: rgb(229, 228, 228); }"); // 设置背景颜色
@@ -140,15 +163,15 @@ ContactSessionItem::ContactSessionItem(QWidget *owner, const QIcon &avatar, cons
     nameLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // 大小策略：水平方向扩展，垂直方向固定
 
     // 消息预览
-    QLabel *msgLabel = new QLabel(msg);
+    msgLabel = new QLabel(msg);
     msgLabel->setStyleSheet("QLabel { font-size: 12px; color: rgb(46, 46, 46); }");
     msgLabel->setFixedHeight(25);
     msgLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // 大小策略：水平方向扩展，垂直方向固定
 
     // 添加子组件
-    layout->addWidget(avatarBtn, 0, 0, 2, 2); // 头像，在第0行0列，占2行2列
-    layout->addWidget(nameLabel, 0, 2, 1, 1); // 用户名，在第0行2列，占1行1列
-    layout->addWidget(msgLabel, 1, 2, 1, 1);  // 消息，在第1行2列，占1行1列
+    layout->addWidget(avatarBtn, 0, 0, 2, 8); // 头像，在第0行0列，占2行8列
+    layout->addWidget(nameLabel, 0, 2, 1, 8); // 用户名，在第0行2列，占1行8列
+    layout->addWidget(msgLabel, 1, 2, 1, 1);  // 消息，在第1行2列，占1行8列
 }
 
 /**
@@ -156,7 +179,7 @@ ContactSessionItem::ContactSessionItem(QWidget *owner, const QIcon &avatar, cons
  * @param event 事件对象
  * @note        用于绘制背景颜色
  */
-void ContactSessionItem::paintEvent(QPaintEvent *event)
+void ContactSessionItemBase::paintEvent(QPaintEvent *event)
 {
     (void)event;
     QStyleOption opt;
@@ -170,7 +193,7 @@ void ContactSessionItem::paintEvent(QPaintEvent *event)
  * @param event 事件对象
  * @note        点击会话对象，选中当前会话
  */
-void ContactSessionItem::mousePressEvent(QMouseEvent *event)
+void ContactSessionItemBase::mousePressEvent(QMouseEvent *event)
 {
     (void)event;
     select();
@@ -179,7 +202,7 @@ void ContactSessionItem::mousePressEvent(QMouseEvent *event)
 /**
  * @brief 选中当前会话
  */
-void ContactSessionItem::select()
+void ContactSessionItemBase::select()
 {
     this->setStyleSheet("QWidget { background-color: rgb(199, 197, 197); }"); // 设置背景颜色
     this->isSelect = true;                                                    // 选中当前会话
@@ -188,7 +211,7 @@ void ContactSessionItem::select()
     {
         if (child != this)                                                    // 不是当前选中的会话
         {
-            ContactSessionItem *item = dynamic_cast<ContactSessionItem *>(child);
+            ContactSessionItemBase *item = dynamic_cast<ContactSessionItemBase *>(child);
             if (item)                                                         // 如果是会话对象
             {
                 item->setStyleSheet("QWidget { background-color: rgb(229, 228, 228); }");
@@ -196,6 +219,7 @@ void ContactSessionItem::select()
             }
         }
     }
+    active(); // 激活当前item对应
 }
 
 /**
@@ -203,7 +227,7 @@ void ContactSessionItem::select()
  * @param event 事件对象
  * @note        鼠标悬停，设置背景颜色
  */
-void ContactSessionItem::enterEvent(QEnterEvent *event)
+void ContactSessionItemBase::enterEvent(QEnterEvent *event)
 {
     (void)event;
     if (!isSelect) // 如果当前会话未选中
@@ -217,7 +241,7 @@ void ContactSessionItem::enterEvent(QEnterEvent *event)
  * @param event 事件对象
  * @note        鼠标离开，恢复背景颜色
  */
-void ContactSessionItem::leaveEvent(QEvent *event)
+void ContactSessionItemBase::leaveEvent(QEvent *event)
 {
     (void)event;
     if (!isSelect) // 如果当前会话未选中
@@ -226,3 +250,81 @@ void ContactSessionItem::leaveEvent(QEvent *event)
     }
 }
 
+/**
+ * @brief          联系人项构造函数
+ * @param userId   用户编号
+ * @param avatar   用户头像
+ * @param nickName 用户昵称
+ * @param intro    用户简介
+ */
+ContactItem::ContactItem(QWidget *owner, const QString &userId, const QIcon &avatar,
+                         const QString &nickName, const QString &intro)
+    : ContactSessionItemBase(owner, avatar, nickName, intro)
+    , userId(userId)
+{
+
+}
+
+/**
+ * @brief       点击项，加载联系人列表
+ */
+void ContactItem::active()
+{
+    qDebug() << "ContactItem::active()";
+}
+
+/**
+ * @brief                 会话项构造函数
+ * @param chatSessionId   会话编号
+ * @param avatar          用户头像
+ * @param chatSessionName 会话名称
+ * @param lastMsgContent  最后一条消息内容
+ */
+SessionItem::SessionItem(QWidget *owner, const QString &chatSessionId, const QIcon &avatar,
+                         const QString &chatSessionName, const QString &lastMsgContent)
+    : ContactSessionItemBase(owner, avatar, chatSessionName, lastMsgContent)
+    , chatSessionId(chatSessionId)
+{
+
+}
+
+/**
+ * @brief       点击项，加载会话项列表
+ */
+void SessionItem::active()
+{
+    qDebug() << "SessionItem::active()";
+}
+
+/**
+ * @brief          申请项构造函数
+ * @param userId   用户编号
+ * @param avatar   用户头像
+ * @param nickName 用户昵称
+ * @param remark   申请备注
+ */
+ApplyItem::ApplyItem(QWidget *owner, const QString &userId, const QIcon &avatar,
+                     const QString &nickName, const QString &remark)
+    : ContactSessionItemBase(owner, avatar, nickName, remark)
+    , userId(userId)
+{
+    // 移除基类中布局管理器中的msgLabel
+    QGridLayout *layout = dynamic_cast<QGridLayout *>(this->layout());
+    layout->removeWidget(msgLabel);
+    delete msgLabel;
+
+    // 添加同意和拒绝按钮
+    QPushButton *agreeBtn = new QPushButton("同意");
+    QPushButton *rejectBtn = new QPushButton("拒绝");
+    // 添加到布局管理器中
+    layout->addWidget(agreeBtn, 1, 2, 1, 1);
+    layout->addWidget(rejectBtn, 1, 3, 1, 1);
+}
+
+/**
+ * @brief       点击项，加载申请人项列表
+ */
+void ApplyItem::active()
+{
+    qDebug() << "ApplyItem::active()";
+}
