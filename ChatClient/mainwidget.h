@@ -5,6 +5,8 @@
 #include <QPushButton>
 #include <QWidget>
 
+#include "messageshowarea.h"
+#include "messageeditarea.h"
 
 class MainWidget : public QWidget
 {
@@ -31,6 +33,9 @@ private:
         ApplyList
     };
     ActiveTab activeTab = SessionList;
+
+    MessageShowArea *messageShowArea; // 消息展示区域
+    MessageEditArea *messageEditArea; // 消息编辑区域
 
 public:
     void initMaindow();          // 初始化主窗口

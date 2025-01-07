@@ -123,7 +123,7 @@ enum MessageType
     File     = 2,             // 文件
     Voice    = 3,             // 语音
     Video    = 4,             // 视频
-    Location = 5              // 位置
+    // Location = 5              // 位置
 };
 
 /**

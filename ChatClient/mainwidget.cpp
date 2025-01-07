@@ -4,6 +4,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include "contactsessionarea.h"
+#include "debug.h"
 
 // 初始化静态成员变量
 MainWidget* MainWidget::_instance = nullptr;
@@ -147,7 +148,48 @@ void MainWidget::initMidWindow()
 
 void MainWidget::initRightWindow()
 {
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setAlignment(Qt::AlignTop);
+    windowRight->setLayout(layout);
 
+    // 上方标题栏
+    QWidget *titleWidget = new QWidget();
+    titleWidget->setFixedHeight(62); // 固定高度
+    titleWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // 水平方向扩展，垂直方向固定
+    titleWidget->setObjectName("titleWidget");
+    titleWidget->setStyleSheet("#titleWidget { border-bottom: 1px solid rgb(231, 231, 231); }"
+                               "{ border-left: 1px solid rgb(231, 231, 231); }");
+    layout->addWidget(titleWidget);
+    // 设置标题栏的布局
+    QHBoxLayout *titleLayout = new QHBoxLayout();
+    titleLayout->setSpacing(0);
+    titleLayout->setContentsMargins(10, 0, 0, 10); // 设置左边距和上边距
+    titleWidget->setLayout(titleLayout);
+    // 会话标题
+    QLabel *sessionTitleLabel = new QLabel();
+    sessionTitleLabel->setStyleSheet("QLabel { font-size:  18px; }");
+#if TEST_UI
+    sessionTitleLabel->setText("会话标题");
+#endif
+    titleLayout->addWidget(sessionTitleLabel);
+    // 设置标题栏的右侧详细信息按钮
+    QPushButton *detailBtn = new QPushButton();
+    detailBtn->setFixedSize(30, 30);
+    detailBtn->setIconSize(QSize(30, 30));
+    detailBtn->setIcon(QIcon(":/resource/image/more.png"));
+    detailBtn->setStyleSheet("QPushButton { border:none; background-color: rgb(245, 245, 245); }"
+                             "QPushButton:pressed { background-color: rgb(220, 220, 220); }");
+    titleLayout->addWidget(detailBtn);
+
+    // 聊天消息区域
+    messageShowArea = new MessageShowArea();
+    layout->addWidget(messageShowArea);
+
+    // 输入框
+    messageEditArea = new MessageEditArea();
+    layout->addWidget(messageEditArea, 0, Qt::AlignBottom); // 底部对齐，伸缩系数为0，表示默认不主动占用额外空间
 }
 
 /**
