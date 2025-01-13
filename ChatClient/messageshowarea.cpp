@@ -39,7 +39,7 @@ MessageShowArea::MessageShowArea()
         model::UserInfo userInfo;
         userInfo.nickName = "昵称" + QString::number(i);
         userInfo.avatar = QIcon(":/resource/image/defaultAvatar.png");
-        model::Message message = model::Message::makeMessage(model::Text, "", userInfo, (QString("消息") + QString::number(i)).toUtf8(), "");
+        model::Message message = model::Message::makeMessage(model::MessageType::Text, "", userInfo, (QString("消息") + QString::number(i)).toUtf8(), "");
         this->pushBackMessageItem(false, message);
         this->pushBackMessageItem(true, message);
     }

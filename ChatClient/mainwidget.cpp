@@ -229,7 +229,7 @@ void MainWidget::loadApplyList()
 void MainWidget::SLOT_onSessionTabBtnClicked()
 {
     qDebug() << "会话标签按钮点击事件";
-    activeTab = SessionList;                                                // 更改当前标签状态，并更改其他标签图标
+    activeTab = ActiveTab::SessionList;                                                // 更改当前标签状态，并更改其他标签图标
     sessionTabBtn->setIcon(QIcon(":/resource/image/session_active.png"));
     contactTabBtn->setIcon(QIcon(":/resource/image/contact_inactive.png"));
     applyTabBtn->setIcon(QIcon(":/resource/image/apply_inactive.png"));
@@ -239,7 +239,7 @@ void MainWidget::SLOT_onSessionTabBtnClicked()
 void MainWidget::SLOT_onContactTabBtnClicked()
 {
     qDebug() << "联系人标签按钮点击事件";
-    activeTab = ContactList;                                                // 更改当前标签状态，并更改其他标签图标
+    activeTab = ActiveTab::ContactList;                                                // 更改当前标签状态，并更改其他标签图标
     sessionTabBtn->setIcon(QIcon(":/resource/image/session_inactive.png"));
     contactTabBtn->setIcon(QIcon(":/resource/image/contact_active.png"));
     applyTabBtn->setIcon(QIcon(":/resource/image/apply_inactive.png"));
@@ -249,7 +249,7 @@ void MainWidget::SLOT_onContactTabBtnClicked()
 void MainWidget::SLOT_onApplyTabBtnClicked()
 {
     qDebug() << "申请标签按钮点击事件";
-    activeTab = ApplyList;                                                  // 更改当前标签状态，并更改其他标签图标
+    activeTab = ActiveTab::ApplyList;                                                  // 更改当前标签状态，并更改其他标签图标
     sessionTabBtn->setIcon(QIcon(":/resource/image/session_inactive.png"));
     contactTabBtn->setIcon(QIcon(":/resource/image/contact_inactive.png"));
     applyTabBtn->setIcon(QIcon(":/resource/image/apply_active.png"));

@@ -116,7 +116,7 @@ public:
     QString phone    = "";    // 用户电话
 };
 
-enum MessageType
+enum class MessageType : unsigned int
 {
     Text     = 0,             // 文本
     Image    = 1,             // 图片
@@ -310,7 +310,7 @@ public:
 /**
  * @brief 项的类型
  */
-enum ItemType
+enum class ItemType : unsigned int
 {
     ContactItem,      // 联系人项
     SessionItem,      // 会话

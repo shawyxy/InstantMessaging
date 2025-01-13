@@ -26,13 +26,13 @@ private:
     QLineEdit *searchEdit;       // 搜索框
     QPushButton *addContactBtn;  // 添加联系人按钮
 
-    enum ActiveTab               // 标签页的类型
+    enum class ActiveTab               // 标签页的类型
     {
         SessionList,
         ContactList,
         ApplyList
     };
-    ActiveTab activeTab = SessionList;
+    ActiveTab activeTab = ActiveTab::SessionList;
 
     MessageShowArea *messageShowArea; // 消息展示区域
     MessageEditArea *messageEditArea; // 消息编辑区域
