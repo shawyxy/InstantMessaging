@@ -17,6 +17,25 @@ private:
     QWidget *container; // 消息展示区域容器
 public:
     MessageShowArea();
+
+    /**
+     * @brief          头插消息
+     * @param isMine   是否是自己发送的消息
+     * @param msg      消息结构体
+     */
+    void pushBackMessageItem(bool isMine, const model::Message &msg);
+
+    /**
+     * @brief          尾插消息
+     * @param isMine   是否是自己发送的消息
+     * @param msg      消息结构体
+     */
+    void pushFrontMessageItem(bool isMine, const model::Message &msg);
+
+    /**
+     * @brief 清空消息
+     */
+    void clearMessageItems();
 };
 
 
@@ -29,47 +48,47 @@ class MessageItem : public QWidget
 {
     Q_OBJECT
 private:
-    bool isMyself; // 是否是自己发送的消息，用于区分左右两侧的消息
+    bool isMine; // 是否是自己发送的消息，用于区分左右两侧的消息
 public:
-    MessageItem(bool isMyself);
+    MessageItem(bool isMine);
 
     /**
      * @brief          获取消息对象(工厂模式)
-     * @param isMyself 是否是自己发送的消息
+     * @param isMine   是否是自己发送的消息
      * @param msg      消息结构体
      * @return         消息对象
      */
-    static MessageItem *getMessageItem(bool isMyself, const model::Message &msg);
+    static MessageItem *getMessageItem(bool isMine, const model::Message &msg);
 
     /**
      * @brief  获取文本消息对象
      * @return 消息对象
      */
-    static MessageItem *getTextMessageItem();
+    static QWidget *getTextMessageItem(bool isMine, const QString &msg);
 
     /**
      * @brief  获取图片消息对象
      * @return 消息对象
      */
-    static MessageItem *getImageMessageItem();
+    static QWidget *getImageMessageItem();
 
     /**
      * @brief  获取文件消息对象
      * @return 消息对象
      */
-    static MessageItem *getFileMessageItem();
+    static QWidget *getFileMessageItem();
 
     /**
      * @brief  获取语音消息对象
      * @return 消息对象
      */
-    static MessageItem *getVoiceMessageItem();
+    static QWidget *getVoiceMessageItem();
 
     /**
      * @brief  获取视频消息对象
      * @return 消息对象
      */
-    static MessageItem *getVideoMessageItem();
+    static QWidget *getVideoMessageItem();
 };
 
 /**
@@ -81,10 +100,10 @@ class MessageContentLabel : public QWidget
     Q_OBJECT
 private:
     QLabel *contentLabel; // 消息内容标签
-    bool isMyself;        // 是否是自己发送的消息
+    bool isMine;          // 是否是自己发送的消息
 
 public:
-    MessageContentLabel(bool isMyself, const QString &content);
+    MessageContentLabel(bool isMine, const QString &content);
 
     /**
      * @brief 重写绘图方法
