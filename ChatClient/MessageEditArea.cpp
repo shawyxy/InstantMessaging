@@ -1,3 +1,3 @@
-#include "messageeditarea.h"
+#include "MessageEditArea.h"
 
 MessageEditArea::MessageEditArea() {}

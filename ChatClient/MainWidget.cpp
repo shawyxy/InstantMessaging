@@ -1,10 +1,10 @@
-#include "mainwidget.h"
+#include "MainWidget.h"
 
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include "contactsessionarea.h"
-#include "debug.h"
+#include "ContactSessionArea.h"
+#include "Debug.h"
 
 // 初始化静态成员变量
 MainWidget* MainWidget::_instance = nullptr;

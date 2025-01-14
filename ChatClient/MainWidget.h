@@ -5,8 +5,8 @@
 #include <QPushButton>
 #include <QWidget>
 
-#include "messageshowarea.h"
-#include "messageeditarea.h"
+#include "MessageShowArea.h"
+#include "MessageEditArea.h"
 
 class MainWidget : public QWidget
 {

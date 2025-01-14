@@ -1,4 +1,4 @@
-#include "contactsessionarea.h"
+#include "ContactSessionArea.h"
 
 #include <QLabel>
 #include <QPainter>

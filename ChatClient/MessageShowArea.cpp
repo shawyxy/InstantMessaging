@@ -1,4 +1,4 @@
-#include "messageshowarea.h"
+#include "MessageShowArea.h"
 
 #include <QScrollBar>
 #include <Qboxlayout>
@@ -7,7 +7,7 @@
 #include <QPainter>
 #include <QPainterPath>
 
-#include "debug.h"
+#include "Debug.h"
 
 /**
  * @brief 消息展示区域

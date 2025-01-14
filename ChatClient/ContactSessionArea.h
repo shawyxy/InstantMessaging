@@ -4,7 +4,7 @@
 #include <QLabel>
 #include <QScrollArea>
 #include <QWidget>
-#include "debug.h"
+#include "Debug.h"
 #include "model/data.h"
 
 /**

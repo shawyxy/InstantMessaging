@@ -14,8 +14,8 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwidget.cpp
-        mainwidget.h
+        MainWidget.cpp
+        MainWidget.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -24,10 +24,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         model/data.h
         resource.qrc
-        contactsessionarea.h contactsessionarea.cpp
-        debug.h
-        messageshowarea.h messageshowarea.cpp
-        messageeditarea.h messageeditarea.cpp
+        ContactSessionArea.h ContactSessionArea.cpp
+        Debug.h
+        MessageShowArea.h MessageShowArea.cpp
+        MessageEditArea.h MessageEditArea.cpp
 
 
     )
