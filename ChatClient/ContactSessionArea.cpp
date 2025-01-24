@@ -13,13 +13,23 @@ ContactSessionArea::ContactSessionArea(QWidget *parent)
     // 自动调整子组件大小，才能开启滚动条
     this->setWidgetResizable(true);
     // 设置滚动条样式
-    this->verticalScrollBar()->setStyleSheet("QScrollBar:vertical { \
-                                              width: 10px; \
-                                              background-color: rgb(80, 80, 80); }");
-    this->horizontalScrollBar()->setStyleSheet("QScrollBar:horizontal { \
-                                                height: 0px; }");
+    this->verticalScrollBar()->setStyleSheet(R"(
+        QScrollBar:vertical {
+            width: 10px;
+            background-color: rgb(80, 80, 80);
+        }
+    )");
+    this->horizontalScrollBar()->setStyleSheet(R"(
+        QScrollBar:horizontal {
+            height: 0px;
+        }
+    )");
     // 去除边框
-    this->setStyleSheet("QWidget { border: none; }");
+    this->setStyleSheet(R"(
+        QWidget {
+            border: none;
+        }
+    )");
 
     container = new QWidget(this);
     container->setFixedWidth(300); // 宽度和左侧窗口一致
@@ -32,18 +42,18 @@ ContactSessionArea::ContactSessionArea(QWidget *parent)
     layout->setAlignment(Qt::AlignTop);                 // 向上对齐
     container->setLayout(layout);
 
-    // for test
-    // for (int i = 0; i < 20; --i)
-    // {
-    //     QPushButton *btn = new QPushButton("会话" + QString::number(i), container);
-    //     btn->setFixedHeight(50);
-    //     layout->addWidget(btn);
-    // }
+// for test
+// for (int i = 0; i < 20; --i)
+// {
+//     QPushButton *btn = new QPushButton("\u4f1a\u8bdd" + QString::number(i), container);
+//     btn->setFixedHeight(50);
+//     layout->addWidget(btn);
+// }
 #if TEST_UI
     QIcon icon(":/resource/image/defaultAvatar.png");
     for (int i = 0; i <=20; ++i)
     {
-        this->SLOT_addItem(model::ItemType::ApplyItem, QString::number(i), icon, "用户" + QString::number(i), "最后一条消息" + QString::number(i));
+        this->SLOT_addItem(model::ItemType::ApplyItem, QString::number(i), icon, "\u7528\u6237" + QString::number(i), "\u6700\u540e\u4e00\u6761\u6d88\u606f" + QString::number(i));
     }
 #endif
 }
@@ -52,7 +62,7 @@ ContactSessionArea::ContactSessionArea(QWidget *parent)
  * @brief 清空会话列表
  * @note
  *          1. QLayout是上面ContactSessionArea中layout的父类(25行)，原则上需要进行类型转换
- *             但是这里可以不强求，因为itemAt()是QLayout中的虚函数，返回的是QLayoutItem类型的指针
+ *             但是这里可以不强求，因举itemAt()是QLayout中的虚函数，返回的是QLayoutItem类型的指针
  *
  *          2. 从最后一个子组件开始删除，是因为删除一个子组件后，后面的子组件会前移
  *             手动删除子组件，防止内存泄漏
@@ -100,7 +110,7 @@ void ContactSessionArea::SLOT_addItem(model::ItemType type, const QString &id, c
     }
     if (item == nullptr)
     {
-        LOG << "会话项为空";
+        LOG << "\u4f1a\u8bdd\u9879\u4e3a\u7a7a";
         return;
     }
     // 添加到会话列表
@@ -115,13 +125,13 @@ void ContactSessionArea::SLOT_selectSessionItem(int index)
 {
     if (index < 0 || index >= container->layout()->count())
     {
-        LOG << "会话列表索引越界, index: " << index;
+        LOG << "\u4f1a\u8bdd\u5217\u8868\u7d22\u5f15\u8d85\u754c, index: " << index;
         return;
     }
     QLayoutItem *layoutItem = container->layout()->itemAt(index);
     if (layoutItem == nullptr || layoutItem->layout() == nullptr) // 项为空或者项的布局为空
     {
-        LOG << "会话列表项为空, index:" << index;
+        LOG << "\u4f1a\u8bdd\u5217\u8868\u9879\u4e3a\u7a7a, index:" << index;
         return;
     }
     // 从布局项中获取会话对象
@@ -139,7 +149,11 @@ void ContactSessionArea::SLOT_selectSessionItem(int index)
 ContactSessionItemBase::ContactSessionItemBase(QWidget *owner, const QIcon &avatar, const QString &name, const QString &msg)
 {
     this->setFixedHeight(70); // 设置固定高度
-    this->setStyleSheet("QWidget { background-color: rgb(229, 228, 228); }"); // 设置背景颜色
+    this->setStyleSheet(R"(
+        QWidget {
+            background-color: rgb(229, 228, 228);
+        }
+    )"); // 设置背景颜色
 
     // 网格布局管理器
     QGridLayout *layout = new QGridLayout();
@@ -153,18 +167,34 @@ ContactSessionItemBase::ContactSessionItemBase(QWidget *owner, const QIcon &avat
     avatarBtn->setIcon(avatar);
     avatarBtn->setIconSize(QSize(50, 50));
     avatarBtn->setFixedSize(50, 50);
-    avatarBtn->setStyleSheet("QPushButton { background-color: transparent; border: none; }");
+    avatarBtn->setStyleSheet(R"(
+        QPushButton {
+            background-color: transparent;
+            border: none;
+        }
+    )");
     avatarBtn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed); // 大小策略：水平方向扩展，垂直方向扩展
 
     // 用户名
     QLabel *nameLabel = new QLabel(name);
-    nameLabel->setStyleSheet("QLabel { font-size: 16px; font-weight: 600; color: rgb(46, 46, 46); }");
+    nameLabel->setStyleSheet(R"(
+        QLabel {
+            font-size: 16px;
+            font-weight: 600;
+            color: rgb(46, 46, 46);
+        }
+    )");
     nameLabel->setFixedHeight(35);
     nameLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // 大小策略：水平方向扩展，垂直方向固定
 
     // 消息预览
     msgLabel = new QLabel(msg);
-    msgLabel->setStyleSheet("QLabel { font-size: 12px; color: rgb(46, 46, 46); }");
+    msgLabel->setStyleSheet(R"(
+        QLabel {
+            font-size: 12px;
+            color: rgb(46, 46, 46);
+        }
+    )");
     msgLabel->setFixedHeight(25);
     msgLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // 大小策略：水平方向扩展，垂直方向固定
 
@@ -204,7 +234,11 @@ void ContactSessionItemBase::mousePressEvent(QMouseEvent *event)
  */
 void ContactSessionItemBase::select()
 {
-    this->setStyleSheet("QWidget { background-color: rgb(199, 197, 197); }"); // 设置背景颜色
+    this->setStyleSheet(R"(
+        QWidget {
+            background-color: rgb(199, 197, 197);
+        }
+    )"); // 设置背景颜色
     this->isSelect = true;                                                    // 选中当前会话
     const QObjectList children = this->parentWidget()->children();            // 将其他会话取消选中
     for (QObject *child : children)
@@ -214,7 +248,11 @@ void ContactSessionItemBase::select()
             ContactSessionItemBase *item = dynamic_cast<ContactSessionItemBase *>(child);
             if (item)                                                         // 如果是会话对象
             {
-                item->setStyleSheet("QWidget { background-color: rgb(229, 228, 228); }");
+                item->setStyleSheet(R"(
+                    QWidget {
+                        background-color: rgb(229, 228, 228);
+                    }
+                )");
                 item->isSelect = false;
             }
         }

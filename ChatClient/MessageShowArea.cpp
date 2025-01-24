@@ -18,10 +18,23 @@ MessageShowArea::MessageShowArea()
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->setWidgetResizable(true); // 设置滚动区域是否自动调整大小
     // 垂直滚动条样式
-    this->verticalScrollBar()->setStyleSheet("QScrollBar: { width: 2px; backgroud: rgb(240, 240, 240); }");
+    this->verticalScrollBar()->setStyleSheet(R"(
+        QScrollBar: {
+            width: 2px;
+            backgroud: rgb(240, 240, 240);
+        }
+    )");
     // 水平滚动条样式，隐藏
-    this->horizontalScrollBar()->setStyleSheet("QScrollBar: { height: 0; }");
-    this->setStyleSheet("QScrollArea { border: none; }");
+    this->horizontalScrollBar()->setStyleSheet(R"(
+        QScrollBar: {
+            height: 0;
+        }
+    )");
+    this->setStyleSheet(R"(
+        QScrollArea {
+            border: none;
+        }
+    )");
     // 添加容器
     container = new QWidget();
     this->setWidget(container);
@@ -128,7 +141,12 @@ MessageItem *MessageItem::getMessageItem(bool isMine, const model::Message &msg)
 
     // 昵称和时间
     QLabel *nickNameLabel = new QLabel();
-    nickNameLabel->setStyleSheet("QLabel { font-size: 12px; color: rgb(178, 178, 178); }");
+    nickNameLabel->setStyleSheet(R"(
+        QLabel {
+            font-size: 12px;
+            color: rgb(178, 178, 178);
+        }
+    )");
     nickNameLabel->setAlignment(Qt::AlignBottom);
     nickNameLabel->setText(msg.sender.nickName + "|" + msg.sendTime);
     if (isMine)
@@ -229,14 +247,20 @@ MessageContentLabel::MessageContentLabel(bool isMine, const QString &content)
 
     QFont font;
     // font.setFamily("微软雅黑");
-    font.setPixelSize(14);
+    font.setPixelSize(12);
 
     this->contentLabel = new QLabel();
     this->contentLabel->setText(content);
     this->contentLabel->setFont(font);
     this->contentLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     this->contentLabel->setWordWrap(true); // 自动换行
-    this->contentLabel->setStyleSheet("QLabel { padding: 0 10px; line-height: 1.2; background-color: transparent }");
+    this->contentLabel->setStyleSheet(R"(
+        QLabel {
+            padding: 0 10px;
+            line-height: 1.2;
+            background-color: transparent;
+        }
+    )");
 }
 
 
@@ -273,8 +297,8 @@ void MessageContentLabel::paintEvent(QPaintEvent *event)
     painter.setRenderHint(QPainter::Antialiasing); // 打开抗锯齿，使画面更清晰
     if (isMine)
     {
-        painter.setPen(QPen(QColor(137, 217, 97))); // 画笔颜色
-        painter.setBrush(QColor(137, 217, 97)); // 笔刷颜色
+        painter.setPen(QPen(QColor(137, 217, 97))); // 画笔颜色(轮廓色)
+        painter.setBrush(QColor(137, 217, 97)); // 笔刷颜色(填充色)
 
         // 气泡(圆角矩形)左侧横坐标位置
         int leftX = this->width() - width - 10; // 消息内容宽度-消息宽度-右侧边距

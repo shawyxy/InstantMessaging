@@ -53,9 +53,21 @@ void MainWidget::initMaindow()
     windowMid->setFixedWidth(300);              // 中间会话列表固定宽度
     windowRight->setMinimumWidth(600);          // 右侧聊天界面最小宽度
 
-    windowLeft->setStyleSheet("QWidget { background-color: rgb(46, 46, 46); }");
-    windowMid->setStyleSheet("QWidget { background-color: rgb(234, 231, 230); }");
-    windowRight->setStyleSheet("QWidget { background-color: rgb(245, 245, 245); }");
+    windowLeft->setStyleSheet(R"(
+        QWidget {
+            background-color: rgb(46, 46, 46);
+        }
+    )");
+    windowMid->setStyleSheet(R"(
+        QWidget {
+            background-color: rgb(234, 231, 230);
+        }
+    )");
+    windowRight->setStyleSheet(R"(
+        QWidget {
+            background-color: rgb(245, 245, 245);
+        }
+    )");
 
 
     // 将组件添加到布局中
@@ -77,7 +89,11 @@ void MainWidget::initLeftWindow()
     userAvatar->setFixedSize(45, 45);
     userAvatar->setIcon(QIcon(":/resource/image/defaultAvatar.png"));
     userAvatar->setIconSize(QSize(30, 30));
-    userAvatar->setStyleSheet("QPushButton { background-color: transparent; border: none }");
+    userAvatar->setStyleSheet(R"(
+        QPushButton {
+            background-color: transparent; border: none
+        }
+    )");
     layout->addWidget(userAvatar, 1, Qt::AlignCenter | Qt::AlignTop);
 
     // 会话标签按钮
@@ -85,7 +101,12 @@ void MainWidget::initLeftWindow()
     sessionTabBtn->setFixedSize(45, 45);
     sessionTabBtn->setIcon(QIcon(":/resource/image/session_active.png"));
     sessionTabBtn->setIconSize(QSize(30, 30));
-    sessionTabBtn->setStyleSheet("QPushButton { background-color: transparent; border: none }");
+    sessionTabBtn->setStyleSheet(R"(
+        QPushButton {
+            background-color: transparent;
+            border: none
+        }
+    )");
     layout->addWidget(sessionTabBtn, 1, Qt::AlignCenter | Qt::AlignTop);
 
     // 联系人标签按钮
@@ -93,7 +114,12 @@ void MainWidget::initLeftWindow()
     contactTabBtn->setFixedSize(45, 45);
     contactTabBtn->setIcon(QIcon(":/resource/image/contact_inactive.png"));
     contactTabBtn->setIconSize(QSize(30, 30));
-    contactTabBtn->setStyleSheet("QPushButton { background-color: transparent; border: none }");
+    contactTabBtn->setStyleSheet(R"(
+        QPushButton {
+            background-color: transparent;
+            border: none
+        }
+    )");
     layout->addWidget(contactTabBtn, 1, Qt::AlignCenter | Qt::AlignTop);
 
     // 申请标签按钮
@@ -101,7 +127,12 @@ void MainWidget::initLeftWindow()
     applyTabBtn->setFixedSize(45, 45);
     applyTabBtn->setIcon(QIcon(":/resource/image/apply_inactive.png"));
     applyTabBtn->setIconSize(QSize(30, 30));
-    applyTabBtn->setStyleSheet("QPushButton { background-color: transparent; border: none }");
+    applyTabBtn->setStyleSheet(R"(
+        QPushButton {
+            background-color: transparent;
+            border: none
+        }
+    )");
     layout->addWidget(applyTabBtn, 1, Qt::AlignCenter | Qt::AlignTop);
 
     layout->addStretch(20);
@@ -119,13 +150,27 @@ void MainWidget::initMidWindow()
     searchEdit = new QLineEdit();
     searchEdit->setFixedHeight(30);
     searchEdit->setPlaceholderText("搜索");
-    searchEdit->setStyleSheet("QLineEdit { background-color: rgb(226, 226, 226); border-radius: 5px; }");
+    searchEdit->setStyleSheet(R"(
+        QLineEdit {
+            background-color: rgb(226, 226, 226);
+            border-radius: 5px;
+        }
+    )");
 
     addContactBtn = new QPushButton();
     addContactBtn->setFixedSize(30, 30);
     addContactBtn->setIcon(QIcon(":/resource/image/cross.png"));
-    QString style = "QPushButton { background-color: rgb(226, 226, 226); border-radius: 5px; }";
-    style += "QPushButton:pressed { background-color: rgb(240, 240, 240); }";
+    QString style = R"(
+        QPushButton {
+            background-color: rgb(226, 226, 226);
+            border-radius: 5px;
+        }
+    )";
+    style += R"(
+        QPushButton:pressed {
+            background-color: rgb(240, 240, 240);
+        }
+    )";
     addContactBtn->setStyleSheet(style);
 
     // 用空白控件填充搜索框布局
@@ -159,8 +204,12 @@ void MainWidget::initRightWindow()
     titleWidget->setFixedHeight(62); // 固定高度
     titleWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed); // 水平方向扩展，垂直方向固定
     titleWidget->setObjectName("titleWidget");
-    titleWidget->setStyleSheet("#titleWidget { border-bottom: 1px solid rgb(231, 231, 231); }"
-                               "{ border-left: 1px solid rgb(231, 231, 231); }");
+    titleWidget->setStyleSheet(R"(
+        #titleWidget {
+            border-bottom: 1px solid rgb(231, 231, 231);
+            border-left: 1px solid rgb(231, 231, 231);
+        }
+    )");
     layout->addWidget(titleWidget);
     // 设置标题栏的布局
     QHBoxLayout *titleLayout = new QHBoxLayout();
@@ -169,7 +218,11 @@ void MainWidget::initRightWindow()
     titleWidget->setLayout(titleLayout);
     // 会话标题
     QLabel *sessionTitleLabel = new QLabel();
-    sessionTitleLabel->setStyleSheet("QLabel { font-size:  18px; }");
+    sessionTitleLabel->setStyleSheet(R"(
+        QLabel {
+            font-size: 18px;
+        }
+    )");
 #if TEST_UI
     sessionTitleLabel->setText("会话标题");
 #endif
@@ -179,8 +232,15 @@ void MainWidget::initRightWindow()
     detailBtn->setFixedSize(30, 30);
     detailBtn->setIconSize(QSize(30, 30));
     detailBtn->setIcon(QIcon(":/resource/image/more.png"));
-    detailBtn->setStyleSheet("QPushButton { border:none; background-color: rgb(245, 245, 245); }"
-                             "QPushButton:pressed { background-color: rgb(220, 220, 220); }");
+    detailBtn->setStyleSheet(R"(
+        QPushButton {
+            border:none;
+            background-color: rgb(245, 245, 245);
+        }
+        QPushButton:pressed {
+            background-color: rgb(220, 220, 220);
+        }
+    )");
     titleLayout->addWidget(detailBtn);
 
     // 聊天消息区域
