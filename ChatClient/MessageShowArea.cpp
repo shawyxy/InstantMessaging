@@ -52,7 +52,7 @@ MessageShowArea::MessageShowArea()
         model::UserInfo userInfo;
         userInfo.nickName = "昵称" + QString::number(i);
         userInfo.avatar = QIcon(":/resource/image/defaultAvatar.png");
-        model::Message message = model::Message::makeMessage(model::MessageType::Text, "", userInfo, (QString("消息") + QString::number(i)).toUtf8(), "");
+        model::Message message = model::Message::makeMessage(model::MessageType::Text, "", userInfo, (QString("消息消息消息消息消息消息消息消息消息消息消息消息消息消息消息消息") + QString::number(i)).toUtf8(), "");
         this->pushBackMessageItem(false, message);
         this->pushBackMessageItem(true, message);
     }
@@ -61,18 +61,19 @@ MessageShowArea::MessageShowArea()
 }
 
 /**
- * @brief          头插消息
+ * @brief          尾插消息
  * @param isMine   是否是自己发送的消息
  * @param msg      消息结构体
  */
 void MessageShowArea::pushBackMessageItem(bool isMine, const model::Message &msg)
 {
     MessageItem *messageItem = MessageItem::getMessageItem(isMine, msg); // 创建消息对象
-    container->layout()->addWidget(messageItem); // 插入到消息展示区的布局管理器中
+    QVBoxLayout *layout = dynamic_cast<QVBoxLayout *>(container->layout());
+    layout->addWidget(messageItem); // 插入到消息展示区的布局管理器中
 }
 
 /**
- * @brief          尾插消息
+ * @brief          头插消息
  * @param isMine   是否是自己发送的消息
  * @param msg      消息结构体
  */
@@ -80,7 +81,7 @@ void MessageShowArea::pushFrontMessageItem(bool isMine, const model::Message &ms
 {
     MessageItem *messageItem = MessageItem::getMessageItem(isMine, msg);
     QVBoxLayout *layout = dynamic_cast<QVBoxLayout *>(container->layout());
-    layout->addWidget(messageItem);
+    layout->insertWidget(0, messageItem);
 }
 
 /**
@@ -249,7 +250,7 @@ MessageContentLabel::MessageContentLabel(bool isMine, const QString &content)
     // font.setFamily("微软雅黑");
     font.setPixelSize(12);
 
-    this->contentLabel = new QLabel();
+    this->contentLabel = new QLabel(this); // 设置为子控件，否则不显示
     this->contentLabel->setText(content);
     this->contentLabel->setFont(font);
     this->contentLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
