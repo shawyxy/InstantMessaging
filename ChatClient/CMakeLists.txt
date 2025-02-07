@@ -28,6 +28,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Debug.h
         MessageShowArea.h MessageShowArea.cpp
         MessageEditArea.h MessageEditArea.cpp
+        Core/IconButton.cpp Core/IconButton.h
 
 
     )
