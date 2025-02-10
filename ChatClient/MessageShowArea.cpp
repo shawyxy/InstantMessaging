@@ -21,13 +21,13 @@ MessageShowArea::MessageShowArea()
     this->verticalScrollBar()->setStyleSheet(R"(
         QScrollBar: {
             width: 2px;
-            backgroud: rgb(240, 240, 240);
+            background-color: rgb(240, 240, 240);
         }
     )");
     // 水平滚动条样式，隐藏
     this->horizontalScrollBar()->setStyleSheet(R"(
         QScrollBar: {
-            height: 0;
+            height: 0; 
         }
     )");
     this->setStyleSheet(R"(

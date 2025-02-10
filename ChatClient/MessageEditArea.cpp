@@ -50,7 +50,7 @@ MessageEditArea::MessageEditArea(QWidget *parent) : QWidget(parent)
     messageEdit->verticalScrollBar()->setStyleSheet(R"(
         QScrollBar:vertical {
             width: 10px;
-            backgroud-color: rgb(240, 240, 240);
+            background-color: rgb(240, 240, 240);
         }
     )");
     vLayout->addWidget(messageEdit);
